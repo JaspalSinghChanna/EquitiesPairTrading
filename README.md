@@ -1,4 +1,4 @@
-# PairTradingDash
+# EquitiesPairTrading
 The code in this repo downloads data from yahoo finance and saves it locally in a MongoDB.
 It then creates a pair trading dashboard for you to explore relationships between pairs of equities and backtest strategies.
 
