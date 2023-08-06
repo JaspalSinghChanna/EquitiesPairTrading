@@ -222,8 +222,7 @@ class Analytics:
         try:
             t1['vol_cum'] = t1['volume'].cumsum()
         except Exception as e:
-            logging.warning('Caught problem!')
-            raise Exception(e, trades) from e
+            raise Exception('No trades triggered. Please try again with new parameters.') from e
         t1['cashflow_cum'] = t1['cashflow'].cumsum()
         t2 = t1.set_index('trade_date').join(gdf, how='right')
         t2['vol_cum2'] = t2['vol_cum'].ffill().fillna(0)

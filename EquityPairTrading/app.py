@@ -265,9 +265,9 @@ def suggest_params(rf, n_clicks, max_loss, cap):
             suggest_prev_clicks = n_clicks
             check = [max_loss, cap, rf]
             if len([x for x in check if x is None]) == 0:
-                print('getting params')
+                #print('getting params')
                 bst_params = a.get_optimised_params(exp_df1, cap, rf)
-                print(bst_params)
+                #print(bst_params)
                 return ['SUGGESTED PARAMS: ' + str(bst_params)]
         else:
             raise PreventUpdate
