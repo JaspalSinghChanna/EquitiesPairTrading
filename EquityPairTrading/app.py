@@ -284,7 +284,7 @@ app.layout = dbc.Container([
         "look for pair relationships. We then use these relationships to backtest a mean-reversion trading"
         " strategy. First, we calculate correlations using end-of-day"
         " close prices and output the most positive correlations below."
-        " Note that your selection changes when you change the date range."))],
+        " Note that the pair you selected may change when you alter the date range."))],
         className='mt-3 text-left'),
     dbc.Row(html.Hr(), className="m-2"),
     dbc.Row(corr_table_heading, className="text-left"),
