@@ -266,7 +266,10 @@ def suggest_params(rf, n_clicks, max_loss, cap):
             check = [max_loss, cap, rf]
             if len([x for x in check if x is None]) == 0:
                 #print('getting params')
-                bst_params = a.get_optimised_params(exp_df1, cap, rf)
+                try:
+                    bst_params = a.get_optimised_params(exp_df1, cap, rf)
+                except Exception as e:
+                    raise Exception('Error: please try running a backtest first.') from e
                 #print(bst_params)
                 return ['SUGGESTED PARAMS: ' + str(bst_params)]
         else:
