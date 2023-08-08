@@ -13,7 +13,7 @@ a = Analytics()
 df2 = a.get_all_close_data()
 
 app = dash.Dash(external_stylesheets=[dbc.themes.SOLAR])
-application = app.server
+server = app.server
 app_title = html.Div([html.Div("Equity Pair Trading Tool", className="display-1"),])#html.H1("Pair Trading Tool")])
 
 
@@ -72,6 +72,12 @@ loading_opts = dcc.Loading(
         id="loading-output",
         type="default",  # You can use "circle", "dot", "default", "cube", "circle-outside", or "circle-top"
         children=html.Div(id="opt_params")  # Your slow-loading component goes here
+    )
+
+backtest_params = dcc.Loading(
+        id="params-output",
+        type="default",  # You can use "circle", "dot", "default", "cube", "circle-outside", or "circle-top"
+        children=html.Div(id="user_params")  # Your slow-loading component goes here
     )
 
 @callback(
@@ -170,7 +176,8 @@ def update_metrics_after_corr(start_date, end_date, rows, selection):
     [Output(component_id='p_fig', component_property='figure'),
     Output(component_id='port_fig', component_property='figure'),
     Output(component_id='corr_fig', component_property='figure'),
-    Output(component_id='perf_metrics_table', component_property='data'),],
+    Output(component_id='perf_metrics_table', component_property='data'),
+    Output(component_id='user_params', component_property='children'),],
     [Input('rf_in', 'value'),
     Input('backtest_button', 'n_clicks'),
     Input('corr_table', 'derived_virtual_data'),
@@ -193,6 +200,16 @@ def run_backtest(rf, n_clicks, rows, selection, model, start_date, end_date,
             back_test_prev_clicks = n_clicks
             check = [selection, model, z_sell, z_buy, trade_sz, pos_lim, max_l, cap, rf]
             if len([x for x in check if x is None]) == 0:
+                params = {}
+                params['model'] = model
+                params['zscore buy'] = z_buy
+                params['zscore sell'] = z_sell
+                params['trade size'] = trade_sz
+                params['position limit'] = pos_lim
+                params['max loss'] = max_l
+                params['starting capital'] = cap
+                params['risk-free rate'] = rf
+                msg = "INPUT PARAMS: " + str(params)
                 if selection != [] and selection is not None:
                     sec1 = rows[selection[0]]['Security 1']
                     sec2 = rows[selection[0]]['Security 2']
@@ -238,7 +255,7 @@ def run_backtest(rf, n_clicks, rows, selection, model, start_date, end_date,
                 _dict['Sortino Ratio'] = round(sortino, 5)
                 _dict['Max Drawdown (%)'] = round(max_drawdown*100, 5)
                 
-                return [p_fig, port_fig, corr_fig, [_dict]]
+                return [p_fig, port_fig, corr_fig, [_dict], msg]
             else:
                 raise PreventUpdate
         else:
@@ -362,6 +379,7 @@ app.layout = dbc.Container([
         className='mt-3 text-center'),
     dbc.Row(button, className="m-3"),
     dbc.Row(loading_opts, className='my-2'),
+    dbc.Row(backtest_params, className='my-2'),
     dbc.Row([html.Div(html.H3("Performance"))], className='mt-1 text-center'),
     dbc.Row(dcc.Graph(figure={}, id='p_fig'), className="mb-3"),
     #dbc.Row(loading_fig, className="mb-3"),
