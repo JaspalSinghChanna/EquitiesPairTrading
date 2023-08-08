@@ -3,13 +3,28 @@ import pandas as pd
 import yfinance as yf
 from pymongo import MongoClient
 import logging
+import os
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+import datetime
 
 class MongoDBConnection:
-    def __init__(self, port=27017):
-        self.client = MongoClient('localhost', port)
+    def __init__(self, env_var = 'MONGO0'):
+        pwd = os.getenv(env_var)
+        uri = f"mongodb+srv://jsc:{pwd}@serverlessinstance0.qecvssp.mongodb.net/?retryWrites=true&w=majority"
+        self.client = MongoClient(uri, server_api=ServerApi('1'))
+        self.ping_db()
         self.db = self.client['EquityPairTrading']
         self.closecoll = self.db['CloseData']
         self.ohlccoll = self.db['OHLCData']
+
+    def ping_db(self):
+        # Send a ping to confirm a successful connection
+        try:
+            self.client.admin.command('ping')
+            print("Pinged your deployment. You successfully connected to MongoDB!")
+        except Exception as e:
+            raise Exception('Failed to ping Mongo DB') from e
 
 class DataDownloader:
     def __init__(self, path='GoodTickers.csv'): # otherwise get too many nans
@@ -56,6 +71,11 @@ if __name__ == '__main__':
     dd = DataDownloader()
     tickers = dd.get_ticker_list()
     dd.delete_values()
+    logging.warning(datetime.datetime.now())
     dd.download_and_insert_ohlc_data(tickers, start_date="2011-10-13") # otherwise get too many nans
+    logging.warning(datetime.datetime.now())
     dd.insert_close_data()
+    logging.warning(datetime.datetime.now())
     dd.create_indices()
+    logging.warning(datetime.datetime.now())
+    logging.info('Done')

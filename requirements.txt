@@ -9,3 +9,4 @@ pymongo == 4.4.1
 dash == 2.11.1
 dash-bootstrap-components == 1.4.2
 plotly == 5.13.1
+gunicorn
