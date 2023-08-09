@@ -9,6 +9,8 @@ from statsmodels.tsa.stattools import adfuller
 from scipy.stats import zscore
 from dash.exceptions import PreventUpdate
 
+back_test_prev_clicks = 0
+
 a = Analytics()
 df2 = a.get_all_close_data()
 
@@ -263,7 +265,6 @@ def run_backtest(rf, n_clicks, rows, selection, model, start_date, end_date,
         #else:
         #    return ['no change...']
     else:
-        back_test_prev_clicks = 0
         raise PreventUpdate
         #return ['waiting on clicks!']
 
