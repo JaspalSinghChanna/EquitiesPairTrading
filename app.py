@@ -15,7 +15,7 @@ a = Analytics()
 df2 = a.get_all_close_data()
 
 app = dash.Dash(external_stylesheets=[dbc.themes.SOLAR])
-server = app.server
+
 app_title = html.Div([html.Div("Equity Pair Trading Tool", className="display-1"),])#html.H1("Pair Trading Tool")])
 
 
@@ -392,5 +392,9 @@ app.layout = dbc.Container([
             
 ])
 
-if __name__ == "__main__":
-    app.run_server(port=8051, debug=True)
+# if __name__ == "__main__":
+#     app.run_server(port=8051, debug=True)
+
+if __name__ == '__main__':
+    app.run_server(debug=False, host='0.0.0.0', port=8050)
+    server = app.server # required for some deployment environment like Heroku
