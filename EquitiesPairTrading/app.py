@@ -67,8 +67,8 @@ date_range_row = dcc.DatePickerRange(
                 max_date_allowed=datetime.date(2024, 1, 1),
                 clearable=True)
 
-button = [dbc.Col(dbc.Button("Run backtest", color="primary", id='backtest_button'), className="d-grid gap-2 col-6 mx-auto"),
-         dbc.Col(dbc.Button("Suggest parameters", color="light", id='suggest_button'), className="d-grid gap-2 col-6 mx-auto")]
+button = [dbc.Col(dbc.Button("Suggest parameters", color="primary", id='suggest_button'), className="d-grid gap-2 col-6 mx-auto"),
+          dbc.Col(dbc.Button("Run backtest", color="primary", id='backtest_button'), className="d-grid gap-2 col-6 mx-auto"),]
 
 loading_opts = dcc.Loading(
         id="loading-output",
@@ -311,7 +311,8 @@ app.layout = dbc.Container([
         "look for pair relationships. We then use these relationships to backtest a mean-reversion trading"
         " strategy. First, we calculate correlations using end-of-day"
         " close prices and output the most positive correlations below."
-        " Note that the pair you selected may change when you alter the date range."))],
+        " Note that the pair you selected may change when you alter the date range."
+        " Also remember that you must click 'Run Backtest' after changing your selection/parameters to re-run the backtest."))],
         className='mt-3 text-left'),
     dbc.Row(html.Hr(), className="m-2"),
     dbc.Row(corr_table_heading, className="text-left"),
