@@ -76,6 +76,12 @@ loading_opts = dcc.Loading(
         children=html.Div(id="opt_params")  # Your slow-loading component goes here
     )
 
+loading_hr = dcc.Loading(
+        id="loading-hr",
+        type="default",  # You can use "circle", "dot", "default", "cube", "circle-outside", or "circle-top"
+        children=html.Div(id="hedge_ratio_message")  # Your slow-loading component goes here
+    )
+
 backtest_params = dcc.Loading(
         id="params-output",
         type="default",  # You can use "circle", "dot", "default", "cube", "circle-outside", or "circle-top"
@@ -324,7 +330,7 @@ app.layout = dbc.Container([
         " The Kalman filter accounts for this, and a plot of the estimated changing beta values is shown below."))],
         className='mt-3 text-left'),
     dbc.Row([pair_metrics_table], className='m-2'),
-    dbc.Row([html.Div(id='hedge_ratio_message')], className='mt-4'),
+    dbc.Row(loading_hr, className='mt-4'),
     dbc.Row([html.Div(html.H5("Kalman Filter Hedge Ratio:"))], className='mt-1'),
     dbc.Row([dcc.Graph(figure={}, id='kalman_hr_graph')], className="mb-3"),
     dbc.Row(html.Hr(), className="mt-4"),
