@@ -155,7 +155,8 @@ def update_metrics_after_corr(start_date, end_date, rows, selection):
         _dict['ADF Test P-value'] = [ols_adf_value, kal_adf_value]
         _dict['Hurst Exponent'] = [ols_hurst, kal_hurst]
         _data = pd.DataFrame(_dict).round(5).to_dict("records")
-        
+        kal_df.sort_index(inplace=True)
+        price_df.sort_index(inplace=True)
         # now getting hedge ratios. easier in one function
         msg = f"OLS Hedge Ratio: {round(beta_ols,5)}"
         
@@ -233,6 +234,7 @@ def run_backtest(rf, n_clicks, rows, selection, model, start_date, end_date,
                     zscore_buy_threshhold = z_buy, trade_size=trade_sz,
                     position_limit=pos_lim, max_loss=max_l,
                         starting_capital=cap)
+                t2.sort_index(inplace=True)
                 buys = t2[t2['type']=='BUY']
                 sells = t2[t2['type']=='SELL']
                 p_fig = px.line(x=t2.index,y=t2['Open'],
