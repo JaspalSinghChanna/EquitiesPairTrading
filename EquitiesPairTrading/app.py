@@ -249,6 +249,7 @@ def run_backtest(rf, n_clicks, rows, selection, model, start_date, end_date,
                 #go.Scatter(x=df.index, y= df.z.where(df.z >= 1.5 ), mode = 'markers', marker =dict(symbol='triangle-down', size = 13, color = 'red'), 
                 
                 data = shorten_df(df2, start_date, end_date)
+                data.sort_index(inplace=True)
                 rolling_corr = data[sec1].rolling(window=50).corr(data[sec2]).dropna()
                 corr_fig = px.line(x=rolling_corr.index,y=rolling_corr,
                          title="Rolling Correlation (50 business days)", 
